@@ -69,12 +69,12 @@
 -- FROM raw_date_strings
 -- ORDER BY id;
 
-SELECT
-    d.driver_id,
-    d.first_name || ' ' || d.last_name  AS driver_name,
-    m.log_date,
-    m.miles_driven
-FROM   drivers      d
-JOIN   mileage_log  m ON m.driver_id = d.driver_id
-ORDER  BY m.log_date, d.last_name;
+-- SELECT
+--     d.driver_id,
+--     d.first_name || ' ' || d.last_name  AS driver_name,
+--     m.log_date,
+--     m.miles_driven
+-- FROM   drivers      d
+-- JOIN   mileage_log  m ON m.driver_id = d.driver_id
+-- ORDER  BY m.log_date, d.last_name;
  
