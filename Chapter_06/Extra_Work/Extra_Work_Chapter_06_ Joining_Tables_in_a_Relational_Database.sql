@@ -23,19 +23,19 @@
 -- ON c2010.state_fips = c2000.state_fips
 -- AND c2010.county_fips = c2000.county_fips;
 
-SELECT 
-    c2010.geo_name,
-    c2010.state_us_abbreviation AS state,
-    c2010.p0010001 AS pop_2010,
-    c2000.p0010001 AS pop_2000,
-    ROUND(
-        (c2010.p0010001 - c2000.p0010001)::numeric
-        / NULLIF(c2000.p0010001, 0) * 100,
-        2
-    ) AS pct_change
-FROM us_counties_2010 c2010
-JOIN us_counties_2000 c2000
-ON c2010.state_fips = c2000.state_fips
-AND c2010.county_fips = c2000.county_fips
-ORDER BY pct_change ASC
-LIMIT 1;
+-- SELECT 
+--     c2010.geo_name,
+--     c2010.state_us_abbreviation AS state,
+--     c2010.p0010001 AS pop_2010,
+--     c2000.p0010001 AS pop_2000,
+--     ROUND(
+--         (c2010.p0010001 - c2000.p0010001)::numeric
+--         / NULLIF(c2000.p0010001, 0) * 100,
+--         2
+--     ) AS pct_change
+-- FROM us_counties_2010 c2010
+-- JOIN us_counties_2000 c2000
+-- ON c2010.state_fips = c2000.state_fips
+-- AND c2010.county_fips = c2000.county_fips
+-- ORDER BY pct_change ASC
+-- LIMIT 1;
