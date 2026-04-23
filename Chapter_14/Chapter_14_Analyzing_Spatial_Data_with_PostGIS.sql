@@ -4,7 +4,7 @@
 
 -- SELECT srtext
 -- FROM spatial_ref_sys
--- WHERE srid = 4326;
+-- WHERE srid = 4326;bv
 
 -- SELECT ST_GeomFromText('POINT(-74.9233606 42.699992)', 4326);
 -- SELECT ST_GeomFromText('LINESTRING(-74.9 42.7, -75.1 42.7)', 4326);
