@@ -95,7 +95,3 @@
 --  10000)
 -- ORDER BY miles_from_dt ASC;
 
-SELECT ST_AsText(geom)
-FROM us_counties_2010_shp
-LIMIT 1;
-
