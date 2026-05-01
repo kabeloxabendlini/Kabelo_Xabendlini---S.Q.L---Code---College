@@ -93,3 +93,25 @@ WHERE ST_DWithin(geog_point,
  10000)
 ORDER BY miles_from_dt ASC;
 
+SELECT name10,
+ statefp10 AS st,
+ round(
+ ( ST_Area(geom::geography) / 2589988.110336 )::numeric, 
+ ) AS square_miles
+FROM us_counties_2010_shp
+ORDER BY square_miles DESC
+LIMIT 5; 
+
+SELECT name10,
+ statefp10
+FROM us_counties_2010
+WHERE ST_Within('SRID=4269;POINT(-118.3419063 34.0977076)'::geometry, geom); 
+
+SELECT water.fullname AS waterway,
+ roads.rttyp,
+ roads.fullname AS road,
+ ST_AsText(ST_Intersection(water.geom, roads.geom))
+FROM santafe_linearwater_2016 water JOIN santafe_roads_2016 roads
+ ON ST_Intersects(water.geom, roads.geom)
+WHERE water.fullname = 'Santa Fe Riv'
+ORDER BY roads.fullname;
