@@ -1,0 +1,123 @@
+-- ============================================================
+--  DATABASE: EmployeeDB
+--  Forward Engineered DDL — from UML Class Diagram
+--  Tables: Department | Roles | Salaries | Overtime_Hours | Employees
+--  Compatible: MySQL 8+ / PostgreSQL 13+
+-- ============================================================
+
+-- -----------------------------------------------------------
+-- 1. DEPARTMENT
+-- -----------------------------------------------------------
+CREATE TABLE Department (
+    depart_id    INT           NOT NULL AUTO_INCREMENT,
+    depart_name  VARCHAR(100)  NOT NULL,
+    depart_city  VARCHAR(100),
+    CONSTRAINT pk_department  PRIMARY KEY (depart_id),
+    CONSTRAINT uq_depart_name UNIQUE (depart_name)
+);
+
+-- -----------------------------------------------------------
+-- 2. ROLES
+-- -----------------------------------------------------------
+CREATE TABLE Roles (
+    role_id  INT           NOT NULL AUTO_INCREMENT,
+    role     VARCHAR(100)  NOT NULL,
+    CONSTRAINT pk_roles  PRIMARY KEY (role_id),
+    CONSTRAINT uq_role   UNIQUE (role)
+);
+
+-- -----------------------------------------------------------
+-- 3. SALARIES
+-- -----------------------------------------------------------
+CREATE TABLE Salaries (
+    salary_id  INT             NOT NULL AUTO_INCREMENT,
+    salary_pa  DECIMAL(12, 2)  NOT NULL,
+    CONSTRAINT pk_salaries  PRIMARY KEY (salary_id),
+    CONSTRAINT chk_salary   CHECK (salary_pa >= 0)
+);
+
+-- -----------------------------------------------------------
+-- 4. OVERTIME_HOURS
+-- -----------------------------------------------------------
+CREATE TABLE Overtime_Hours (
+    overtime_id     INT  NOT NULL AUTO_INCREMENT,
+    overtime_hours  INT  NOT NULL DEFAULT 0,
+    CONSTRAINT pk_overtime     PRIMARY KEY (overtime_id),
+    CONSTRAINT chk_ot_hours    CHECK (overtime_hours >= 0)
+);
+
+-- -----------------------------------------------------------
+-- 5. EMPLOYEES  (central table — all FKs live here)
+-- -----------------------------------------------------------
+CREATE TABLE Employees (
+    emp_id       INT           NOT NULL AUTO_INCREMENT,
+    first_name   VARCHAR(80)   NOT NULL,
+    surname      VARCHAR(80)   NOT NULL,
+    gender       VARCHAR(20),
+    address      VARCHAR(255),
+    email        VARCHAR(150)  NOT NULL,
+
+    -- Foreign keys
+    depart_id    INT,
+    role_id      INT,
+    salary_id    INT,
+    overtime_id  INT,
+
+    CONSTRAINT pk_employees     PRIMARY KEY (emp_id),
+    CONSTRAINT uq_email         UNIQUE (email),
+
+    CONSTRAINT fk_emp_dept      FOREIGN KEY (depart_id)
+        REFERENCES Department (depart_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+
+    CONSTRAINT fk_emp_role      FOREIGN KEY (role_id)
+        REFERENCES Roles (role_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+
+    CONSTRAINT fk_emp_salary    FOREIGN KEY (salary_id)
+        REFERENCES Salaries (salary_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+
+    CONSTRAINT fk_emp_overtime  FOREIGN KEY (overtime_id)
+        REFERENCES Overtime_Hours (overtime_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+);
+
+-- ============================================================
+--  INDEXES
+-- ============================================================
+CREATE INDEX idx_emp_depart    ON Employees (depart_id);
+CREATE INDEX idx_emp_role      ON Employees (role_id);
+CREATE INDEX idx_emp_salary    ON Employees (salary_id);
+CREATE INDEX idx_emp_overtime  ON Employees (overtime_id);
+CREATE INDEX idx_emp_surname   ON Employees (surname);
+
+-- ============================================================
+--  SAMPLE VIEW — full employee detail
+-- ============================================================
+CREATE OR REPLACE VIEW vw_employee_detail AS
+SELECT
+    e.emp_id,
+    e.first_name,
+    e.surname,
+    e.gender,
+    e.address,
+    e.email,
+    d.depart_name,
+    d.depart_city,
+    r.role,
+    s.salary_pa,
+    o.overtime_hours
+FROM Employees e
+LEFT JOIN Department    d ON e.depart_id   = d.depart_id
+LEFT JOIN Roles         r ON e.role_id     = r.role_id
+LEFT JOIN Salaries      s ON e.salary_id   = s.salary_id
+LEFT JOIN Overtime_Hours o ON e.overtime_id = o.overtime_id;
+
+-- ============================================================
+--  END OF SCRIPT
+-- ============================================================
