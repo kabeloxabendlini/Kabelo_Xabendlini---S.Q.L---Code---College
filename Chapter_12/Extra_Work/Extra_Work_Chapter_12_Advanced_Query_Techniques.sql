@@ -4,44 +4,44 @@
 
 -- Create a Common Table Expression (CTE) to group temperatures
 -- into labeled ranges for easier aggregation
--- WITH temps_collapsed (station_name, max_temperature_group) AS
--- (
---     SELECT 
---         station_name,
+WITH temps_collapsed (station_name, max_temperature_group) AS
+(
+    SELECT 
+        station_name,
         
---         -- Categorize max_temp into defined buckets
---         CASE 
---             WHEN max_temp >= 90              THEN '90 or more'
---             WHEN max_temp BETWEEN 88 AND 89  THEN '88-89'
---             WHEN max_temp BETWEEN 86 AND 87  THEN '86-87'
---             WHEN max_temp BETWEEN 84 AND 85  THEN '84-85'
---             WHEN max_temp BETWEEN 82 AND 83  THEN '82-83'
---             WHEN max_temp BETWEEN 80 AND 81  THEN '80-81'
---             ELSE '79 or less'
---         END AS max_temperature_group
+        -- Categorize max_temp into defined buckets
+        CASE 
+            WHEN max_temp >= 90              THEN '90 or more'
+            WHEN max_temp BETWEEN 88 AND 89  THEN '88-89'
+            WHEN max_temp BETWEEN 86 AND 87  THEN '86-87'
+            WHEN max_temp BETWEEN 84 AND 85  THEN '84-85'
+            WHEN max_temp BETWEEN 82 AND 83  THEN '82-83'
+            WHEN max_temp BETWEEN 80 AND 81  THEN '80-81'
+            ELSE '79 or less'
+        END AS max_temperature_group
 
---     FROM temperature_readings
+    FROM temperature_readings
 
---     -- Filter to only include Waikiki station data
---     WHERE station_name = 'WAIKIKI 717.2 HI US'
+    -- Filter to only include Waikiki station data
+    WHERE station_name = 'WAIKIKI 717.2 HI US'
     
---     -- Exclude rows where max_temp is NULL
---     AND max_temp IS NOT NULL
--- )
+    -- Exclude rows where max_temp is NULL
+    AND max_temp IS NOT NULL
+)
 
 -- Aggregate results: count how many readings fall into each group
--- SELECT 
---     station_name,
---     max_temperature_group,
---     COUNT(*) AS frequency
+SELECT 
+    station_name,
+    max_temperature_group,
+    COUNT(*) AS frequency
 
--- FROM temps_collapsed
+FROM temps_collapsed
 
 -- Group by station and temperature bucket
--- GROUP BY station_name, max_temperature_group
+GROUP BY station_name, max_temperature_group
 
 -- Order results by highest frequency first
--- ORDER BY frequency DESC;
+ORDER BY frequency DESC;
 
 
 

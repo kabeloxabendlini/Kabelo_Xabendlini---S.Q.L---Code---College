@@ -17,9 +17,17 @@ pg_dump -d gis_analysis -U postgres -Fc -f "C:\Users\Admin\gis_analysis_backup.d
 # Get file path and size (useful to confirm backup worked)
 Get-Item "C:\Users\Admin\gis_analysis_backup.dump" | Select-Object FullName, Length
 
+# ================================================================
+# Step 3 — Check the size of the database before and after backup
+# ================================================================
+
+SELECT pg_size_pretty(pg_total_relation_size('vacuum_test'));
+SELECT pg_size_pretty(
+ pg_total_relation_size('vacuum_test')
+ );
 
 # ============================================================
-# Step 3 — Backup ONLY a specific table
+# Step 4 — Backup ONLY a specific table
 # ============================================================
 
 # -t farmers_markets → only dump this table
@@ -27,7 +35,7 @@ pg_dump -t farmers_markets -d gis_analysis -U postgres -Fc -f "C:\Users\Admin\fa
 
 
 # ============================================================
-# Step 4 — Drop the database (⚠️ destructive operation)
+# Step 5 — Drop the database (⚠️ destructive operation)
 # ============================================================
 
 # Deletes the entire database (make sure you have a backup!)
@@ -35,7 +43,7 @@ DROP DATABASE gis_analysis;
 
 
 # ============================================================
-# Step 5 — Restore FULL database from backup
+# Step 6 — Restore FULL database from backup
 # ============================================================
 
 # -C        → recreate the database automatically
@@ -44,7 +52,7 @@ pg_restore -C -d postgres -U postgres "C:\Users\Admin\gis_analysis_backup.dump"
 
 
 # ============================================================
-# Step 6 — Restore ONLY a specific table
+# Step 7 — Restore ONLY a specific table
 # ============================================================
 
 # Restores farmers_markets table into existing database
@@ -52,7 +60,7 @@ pg_restore -t farmers_markets -d gis_analysis -U postgres "C:\Users\Admin\farmer
 
 
 # ============================================================
-# Step 7 — Create a human-readable SQL backup
+# Step 8 — Create a human-readable SQL backup
 # ============================================================
 
 # This creates a plain-text .sql file (not compressed)

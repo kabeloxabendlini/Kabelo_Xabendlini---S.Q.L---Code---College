@@ -1,5 +1,5 @@
 -- =============================================================================
--- Practical SQL: Chapter 12 - Working with Dates and Times
+-- Practical SQL: Chapter 11 - Working with Dates and Times
 -- Try It Yourself - Solutions
 -- =============================================================================
 -- These exercises use the nyc_yellow_taxi_trips_2016_06_01 table, which

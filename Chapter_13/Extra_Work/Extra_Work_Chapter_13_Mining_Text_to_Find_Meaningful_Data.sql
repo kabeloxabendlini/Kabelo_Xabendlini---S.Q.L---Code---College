@@ -57,34 +57,34 @@
 -- ------------------------------------------------------------
 -- Basic approach: split text into words and count distinct ones
 -- ------------------------------------------------------------
--- SELECT 
---     COUNT(DISTINCT word) AS unique_words_5_plus
--- FROM (
---     SELECT 
---         regexp_split_to_table(speech_text, '\s+') AS word  -- split text into words
---     FROM president_speeches
---     WHERE speech_date = '1970-01-01'  -- target specific speech
--- ) AS words
--- WHERE length(word) >= 5;  -- only words with 5+ characters
+SELECT 
+    COUNT(DISTINCT word) AS unique_words_5_plus
+FROM (
+    SELECT 
+        regexp_split_to_table(speech_text, '\s+') AS word  -- split text into words
+    FROM president_speeches
+    WHERE speech_date = '1970-01-01'  -- target specific speech
+) AS words
+WHERE length(word) >= 5;  -- only words with 5+ characters
 
 
 -- ------------------------------------------------------------
 -- BONUS: Clean punctuation before counting
 -- Removes trailing commas and periods
 -- ------------------------------------------------------------
--- SELECT 
---     COUNT(DISTINCT word) AS unique_words_5_plus_cleaned
--- FROM (
---     SELECT 
---         regexp_replace(
---             regexp_split_to_table(speech_text, '\s+'), -- split into words
---             '[,.]$',   -- regex: match comma or period at END of word
---             ''         -- replace with nothing
---         ) AS word
---     FROM president_speeches
---     WHERE speech_date = '1970-01-01'
--- ) AS words
--- WHERE length(word) >= 5;
+SELECT 
+    COUNT(DISTINCT word) AS unique_words_5_plus_cleaned
+FROM (
+    SELECT 
+        regexp_replace(
+            regexp_split_to_table(speech_text, '\s+'), -- split into words
+            '[,.]$',   -- regex: match comma or period at END of word
+            ''         -- replace with nothing
+        ) AS word
+    FROM president_speeches
+    WHERE speech_date = '1970-01-01'
+) AS words
+WHERE length(word) >= 5;
 
 
 -- ------------------------------------------------------------
