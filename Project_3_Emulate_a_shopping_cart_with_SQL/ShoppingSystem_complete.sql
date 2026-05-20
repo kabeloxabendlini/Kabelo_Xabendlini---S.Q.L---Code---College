@@ -340,7 +340,7 @@ TRUNCATE TABLE Cart;
 
 SELECT 'FUNCTION DEMO — AddToCart' AS step;
 SELECT AddToCart(1) AS coke_qty_after_add;      -- insert Coke, qty = 1
-SELECT AddToCart(1) AS coke_qty_after_add;      -- update Coke, qty = 2
+SELECT AddToCart(1) AS coke_qmmty_after_add;      -- update Coke, qty = 2
 SELECT AddToCart(2) AS chips_qty_after_add;     -- insert Chips, qty = 1
 
 SELECT 'Cart after function adds:' AS step;
