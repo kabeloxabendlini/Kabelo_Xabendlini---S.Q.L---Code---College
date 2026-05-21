@@ -10,9 +10,9 @@
 pg_dump -d gis_analysis -U postgres -Fc -f "C:\Users\Admin\gis_analysis_backup.dump"
 
 
-# ============================================================
+# ================================================================
 # Step 2 — Verify the backup file exists and check its size
-# ============================================================
+# ================================================================
 
 # Get file path and size (useful to confirm backup worked)
 Get-Item "C:\Users\Admin\gis_analysis_backup.dump" | Select-Object FullName, Length
